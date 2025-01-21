@@ -8,8 +8,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function() {
-    return view('show');
-});
-
-Route::get('/home', 'App\Http\Controllers\VisitedInfoController@get_user_aquarium_data');
+Route::get('/home', 'App\Http\Controllers\VisitedInfoController@show_home');

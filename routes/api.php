@@ -8,5 +8,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // ※以下のルーティングを確認するためには"Talend API Tester"の利用が必要
-Route::post('/home', 'App\Http\Controllers\VisitedInfoController@test3');
+Route::get('/users_aquarium_data', 'App\Http\Controllers\VisitedInfoController@get_users_aquarium_data');
 
