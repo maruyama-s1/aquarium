@@ -3,6 +3,14 @@
   box-sizing: border-box;
 }
 
+.hr-center {
+  text-align: center;
+}
+
+.hr-right {
+  text-align: right;
+}
+
 /* background color */
 .bkg-clr-main {
   background-color: #FFFFFF;
@@ -32,6 +40,21 @@ body.update {
   max-width: 900px;
 }
 
+h2.update {
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+div.update {
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+p.update {
+  margin-bottom: 0;
+  /* padding: 10px;  後ほど検討*/
+}
+
 /* header */
 /* Bootstrapの影響で要素に直にスタイル適用できないため、既存クラス指定 */
 header div.row {
@@ -43,43 +66,16 @@ header img.logo {
 }
 
 /* main */
-/* Bootstrapの影響で要素に直にスタイル適用できないため、updateクラス追加 */
-h2.update {
-  margin-bottom: 0;
-  padding: 10px;
-}
-
-/* Bootstrapの影響で要素に直にスタイル適用できないため、updateクラス追加 */
-p.update {
-  margin-bottom: 0;
-  /* padding: 10px; */
-}
-
 main section {
   padding: 20px;
 }
 
-main div.container-fluid {
-  padding: 10px;
-}
-
-main div.col-md-6,
-        .col-sm-6 {
-  padding: 10px;
-}
-
-main div.hr-center {
-  text-align: center;
-  margin: auto;
-  padding: 10px; /* .com-sm-6でpaddingが指定できなかったためここで指定 */
-}
-
-main img.photo {
+.img-home-sec1 {
   width: 100%;
   max-width: 600px;
 }
 
-main button img {
+.sec-2nd button img { 
   width: 100%;
   max-width: 250px;
 }
@@ -87,9 +83,4 @@ main button img {
 /* footer */
 footer {
   /* height: 200px; */
-}
-
-footer div {
-  padding: 10px;
-  text-align: center;
 }

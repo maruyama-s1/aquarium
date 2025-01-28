@@ -26,4 +26,10 @@ class VisitedInfoController extends Controller
         return $lists;
     }
 
+    // visited_infoテーブルに情報を追記
+    public function add_visited_info(Request $request) {
+        $aquarium_name = $request->input('aquarium_name');
+        return $aquarium_name;
+    }
+
 }
