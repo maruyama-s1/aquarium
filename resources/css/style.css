@@ -12,23 +12,23 @@
 }
 
 /* background color */
-.bkg-clr-main {
+.block--bkg-clr-main {
   background-color: #FFFFFF;
 }
 
-.bkg-clr-second {
+.block--bkg-clr-second {
   background-color: #DBE8E7;
 }
 
-.bkg-clr-accent1 {
+.block--bkg-clr-accent1 {
   background-color: #3E99AD;
 }
 
-.bkg-clr-accent2 {
+.block--bkg-clr-accent2 {
   background-color: #CBCA69;
 }
 
-.bkg-clr-accent3 {
+.block--bkg-clr-accent3 {
   background-color: #FF7757;
 }
 

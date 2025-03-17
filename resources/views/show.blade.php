@@ -4,16 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>aquarium-HOME</title>
-    <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-    <!-- Bootstrap css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Vita-Bootstrap, css, jsの読み込み -->
+    @vite(['resources/scss/styles.scss', 'resources/js/app.js', 'resources/css/style.css'])
+    <!-- css-Vita使用のため非表示 -->
+    <!-- <link rel="stylesheet" href="{{ asset('/css/style.css') }}"> -->
+    <!-- Bootstrap css-Vita使用のため非表示 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> -->
+
   </head>
-  <body class="update bkg-clr-main">
-    <header class="bkg-clr-second">
+  <body class="update block--bkg-clr-main"> <!-- ?? bkg-clrはBEMでの記載に修正する -->
+    <header class="block--bkg-clr-second">
       <div class="container-fluid">
         <div class="row">
           <!-- Navbar show/hide switch(Medium:768px～) -->
-          <nav class="navbar navbar-expand-md bkg-clr-accent1">
+          <nav class="navbar navbar-expand-md block--bkg-clr-accent1">
             <div class="container-fluid">
               <!-- Logo -->
               <a class="navbar-brand" href="#">
@@ -21,18 +25,17 @@
               </a>
               <!-- Hamburger menu -->
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span> <!-- ?? imgで画像に変更可能 -->
               </button>
               <!-- Navigation menu -->
               <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto me-md-1 mb-2 mb-md-0">
                   <li class="nav-item">
-                    <!-- ??urlに/homeと表示したい場合どうしたらいい？ -->
-                    <btn class="nav-link active menu-home" aria-current="page" href="#">ホーム</bth>
-                    <!-- <a class="nav-link active menu-home" aria-current="page" href="#">ホーム</a> -->
+                    <btn class="nav-link active menu-home" aria-current="page">ホーム</bth>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">思い出</a>
+                    <btn class="nav-link menu-memory">思い出</bth>
+                    <!-- <a class="nav-link" href="#">思い出</a> -->
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -47,7 +50,7 @@
         </div>
       </div>
     </header>
-    <main class="bkg-clr-second">
+    <main class="block--bkg-clr-second">
       <div class="div-main">
         <!-- ホーム -->
         <div class="div-home">
@@ -123,30 +126,92 @@
           <section class="sec-1st">
             <h2 class="update">新しく記録する</h2>
             <div>
-              <form action="{{ route('requests.add_visited_info') }}" method="post">
+              <!-- フォーム入力後に非同期処理でデータを送信し、登録完了画面に変わるようにするため、actionなどはしてしなくてもよい -->
+              <!-- <form action="{{ route('requests.add_visited_info') }}" method="post" enctype="multipart/form-data"> -->
+              <form id=add-visited-info>
+                @csrf
+                <!-- フォーム入力 -->
                 <table class="tbl-add">
                   <tr>
                     <th>水族館名</th>
-                    <td><input type="text" name="aquarium_name"></td>
+                    <td>
+                      <input type="text" name="aquarium_name">
+                    </td>
                   </tr>
                   <tr>
                     <th>いった日</th>
-                    <td></td>
+                    <td>
+                      <input type="date" name="visited_date" >
+                    </td>
                   </tr>
                   <tr>
                     <th>ひとこと</th>
-                    <td></td>
+                    <td>
+                      <textarea name="tweet" rows="5" cols="30" placeholder="ひとこと"></textarea>
+                    </td>
                   </tr>
                   <tr>
                     <th>写真</th>
-                    <td></td>
+                    <!-- 写真表示 scriptで書き換え -->
+                    <td>
+                      <input type="file" name="aquarium_images[]" accept=".png, .PNG, .jpg, .JPG" multiple>
+                      <div class="div_pv"></div>
+                    </td>
                   </tr>
                 </table>
-                <input type="submit">
-                <input type="reset">
+                <button type="button" name="btn-conf" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  登録確認
+                </button>
+                <button type="reset" name="btn-clear" class="btn btn-primary">リセット</button>
+                <!-- モーダル　??...(1) -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <table>
+                          <tbody>
+                            <tr id="modal-tr-aquarium-name">
+                              <th>水族館名</th>
+                              <td>：</td>
+                            </tr>
+                            <tr id="modal-tr-visited_date">
+                              <th>いった日</th>
+                              <td>：</td>
+                            </tr>
+                            <tr id="modal-tr-tweet">
+                              <th>ひとこと</th>
+                              <td>：</td>
+                            </tr>
+                            <tr id="modal-tr-aquarium-images">
+                              <th>写真</th>
+                              <td>：</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
+                        <button type="submit" name="btn-subm" class="btn btn-primary" data-bs-dismiss="modal">登録</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </section>
+        </div>
+        <!-- メッセージ ??-->
+        <div class="div-msg">
+          <h2 class="update" id="h2-msg"><!-- scriptで書き換え --></h2>
+          <!-- メッセージ表示 -->
+          <div id="div-msg"><!-- scriptで書き換え --></div>
+          <div class="hr-center">
+            <button class="btn-home" type="button">ホーム</button>
+          </div>
         </div>
         <!-- リンク2 -->
         <div class="div-link2">
@@ -154,7 +219,7 @@
         </div>
       </div>
     </main>
-    <footer class="bkg-clr-second">
+    <footer class="block--bkg-clr-second">
       <div class="container-fluid update">
         <div class="row">
           <div class="col-md-4 update hr-center">
@@ -175,12 +240,14 @@
 
     <script>
       // Function
+      // ホーム -画面構成
       function loadFinished(){
         // main div homeのみ表示
         // 非表示
         document.getElementsByClassName('div-home')[0].style.display = 'none';
         document.getElementsByClassName('div-memory')[0].style.display = 'none';
         document.getElementsByClassName('div-add')[0].style.display = 'none';
+        document.getElementsByClassName('div-msg')[0].style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
         document.getElementsByClassName('div-home')[0].style.display = 'block';
@@ -193,12 +260,12 @@
         // [ユーザの直近の水族館情報]
         const tblHome1 = document.getElementsByClassName("tbl-home-sec1");
 
-        // ページ更新時テーブル内の行(水族館情報)削除
+        // 前回データ削除
         if (tblHome1[0].childNodes.length != 0) {
           for (let i = tblHome1[0].childNodes.length - 1; i > -1; i--) {
           // 削除するノードの名前を表示(非表示中)
           // console.log(i + '：' + tblHome1[0].childNodes[i].nodeName);
-          // ノードを削除。
+          // ノードを削除
           tblHome1[0].removeChild(tblHome1[0].childNodes[i]);
           }
         }
@@ -241,23 +308,14 @@
         .catch(error => console.error('Error:', error));
       }
 
-      function userAquariumAdd() {
-        // div addのみ表示
-        // 非表示
-        document.getElementsByClassName('div-home')[0].style.display = 'none';
-        document.getElementsByClassName('div-memory')[0].style.display = 'none';
-        document.getElementsByClassName('div-add')[0].style.display = 'none';
-        document.getElementsByClassName('div-link2')[0].style.display = 'none';
-        // 表示
-        document.getElementsByClassName('div-add')[0].style.display = 'block';
-      }
-
+      // 思い出一覧 -画面構成
       function usersAquariumList(){
         // div memoryのみ表示
         // 非表示
         document.getElementsByClassName('div-home')[0].style.display = 'none';
         document.getElementsByClassName('div-memory')[0].style.display = 'none';
         document.getElementsByClassName('div-add')[0].style.display = 'none';
+        document.getElementsByClassName('div-msg')[0].style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
         document.getElementsByClassName('div-memory')[0].style.display = 'block';
@@ -288,7 +346,7 @@
           const show = (page, step) => {
             const tblMemory = document.getElementsByClassName('tbl-memory');
 
-            // ページ更新時テーブル内の見出し以外の行(水族館情報)削除
+            // 前回データ削除
             if (document.getElementsByClassName('tbl-data').length != 0) {
               for (let i = tblMemory[0].childNodes.length - 1; i > 1; i--) {
               // 削除するノードの名前を表示(非表示中)
@@ -348,7 +406,7 @@
           // [ページ数表示 <xxx>表示]
           const ulPage = document.getElementsByClassName('ul-page');
 
-          // ページ更新時ページ数(li)削除
+          // 前回データ削除
           for (let i = ulPage[0].children.length-1; i >= 0; i--) {
             ulPage[0].removeChild(ulPage[0].children[i]);
           }
@@ -392,15 +450,200 @@
         .catch(error => console.error('Error:', error));
       }
 
+      // 思い出記録 -画面構成
+      // グローバル変数
+      let fileList = []; // 写真保持用リスト
+
+      function userAquariumAdd() {
+        // div addのみ表示
+        // 非表示
+        document.getElementsByClassName('div-home')[0].style.display = 'none';
+        document.getElementsByClassName('div-memory')[0].style.display = 'none';
+        document.getElementsByClassName('div-add')[0].style.display = 'none';
+        document.getElementsByClassName('div-msg')[0].style.display = 'none';
+        document.getElementsByClassName('div-link2')[0].style.display = 'none';
+        // 表示
+        document.getElementsByClassName('div-add')[0].style.display = 'block';
+      }
+
+      // 思い出記録 -選択ファイル表示
+      const aquariumImage = document.getElementsByName('aquarium_images[]');
+      const divPv = document.getElementsByClassName('div_pv');
+
+      aquariumImage[0].addEventListener('change', () => {
+        // 写真プレビュー表示
+        const imgFiles = aquariumImage[0].files; // 選択した写真のデータ
+
+        // imgFiles用のimgタグを1つずつ作成
+        for (i = 0; i < imgFiles.length; i++) {
+          const rd = new FileReader();
+          rd.onload = function() {
+            const imgPv = document.createElement('img');
+            imgPv.src = rd.result;
+            imgPv.name = "img-pv";
+            divPv[0].appendChild(imgPv);
+          };
+          rd.readAsDataURL(imgFiles[i]);
+        }
+
+        // アップロードした写真の保持
+        const dt = new DataTransfer();
+        const uploaded = aquariumImage[0].files;
+
+        // 既存の写真データをDataTransferオブジェクトのアイテムリストに追加
+        fileList.forEach((file) => {
+          dt.items.add(file);
+        })
+        // いくつの既存データがあるか表示（非表示中）
+        // console.log('退避' + dt.items.length);
+
+        // 新規の写真データをDataTransferオブジェクトのアイテムリストに追加と写真保存用リストに追加
+        for (let i = 0; i < uploaded.length; i++) {
+          dt.items.add(uploaded[i]);
+          fileList.push(uploaded[i]);
+        }
+        // いくつの写真データ（既存・新規）があるか表示（非表示中）
+        // console.log('新規' + dt.items.length);
+
+        // フォーム type="file"に全ての写真データを格納する
+        aquariumImage[0].files = dt.files;
+      });
+
+      // 思い出記録 -登録確認
+      function userAquariumConf() {
+        // フォームデータ取得
+        const aquariumName = document.getElementsByName('aquarium_name')[0].value;
+        const visitedDate = document.getElementsByName('visited_date')[0].value;
+        const tweet = document.getElementsByName('tweet')[0].value;
+        const aquariumImages = document.getElementsByName('aquarium_images[]')[0].files;
+
+        // モーダル 登録内容確認
+        // 水族館名
+        const modalAquariumName = document.getElementById('modal-tr-aquarium-name');
+        // 前回内容の削除
+        for (i = modalAquariumName.childElementCount - 1; i > 1; i--) {
+          modalAquariumName.children[i].remove();
+        }
+        // 新規内容の追加
+        const td1 = document.createElement("td");
+        td1.innerHTML = aquariumName
+        modalAquariumName.append(td1);
+
+        // いった日
+        const modalVisitedDate = document.getElementById('modal-tr-visited_date');
+        // 前回内容の削除
+        for (i = modalVisitedDate.childElementCount - 1; i > 1; i--) {
+          modalVisitedDate.children[i].remove();
+        }
+        // 新規内容の追加
+        const td2 = document.createElement("td");
+        td2.innerHTML = visitedDate;
+        modalVisitedDate.append(td2);
+
+        // ひとこと ??確認画面で改行が空白に置き換わるため確認
+        const modalTweet = document.getElementById('modal-tr-tweet');
+        // 前回内容の削除
+        for (i = modalTweet.childElementCount - 1; i > 1; i--) {
+          modalTweet.children[i].remove();
+        }
+        // 新規内容の追加
+        const td3 = document.createElement("td");
+        td3.innerHTML = tweet;
+        modalTweet.append(td3);
+
+        // 写真 ??Bootstrapのグリッドシステムで写真位置調整
+        const modalAquariumImages = document.getElementById('modal-tr-aquarium-images');
+        // 前回内容の削除
+        for (i = modalAquariumImages.childElementCount - 1; i > 1; i--) {
+          modalAquariumImages.children[i].remove();
+        }
+        // 新規内容の追加
+        const td4 = document.createElement("td");
+        for (i = 0; i < aquariumImages.length; i++) {
+          const rd = new FileReader();
+          rd.onload = function() {
+            const imgPv = document.createElement('img');
+            imgPv.src = rd.result;
+            imgPv.name = "img-pv";
+            td4.appendChild(imgPv);
+          };
+          rd.readAsDataURL(aquariumImages[i]);
+        }
+        modalAquariumImages.append(td4);
+      }
+
+      // 思い出記録 - クリア
+      function userAquariumClear() {
+        const aquariumImage = document.getElementsByName('aquarium_images[]');
+        const divPv = document.getElementsByClassName('div_pv');
+        // 前回内容の削除（写真のみ）
+        for (i = divPv[0].childElementCount - 1; i > -1; i--) {
+          divPv[0].children[i].remove();
+        }
+        // 保持してる写真を削除 ---下記リストをグローバル変数にして保持してる写真を削除
+        fileList = [];
+      }
+
+      //思い出記録 - 登録完了
+      function userAquariumSubm(data) {
+        // div msgのみ表示
+        // 非表示
+        document.getElementsByClassName('div-home')[0].style.display = 'none';
+        document.getElementsByClassName('div-memory')[0].style.display = 'none';
+        document.getElementsByClassName('div-add')[0].style.display = 'none';
+        document.getElementsByClassName('div-msg')[0].style.display = 'none';
+        document.getElementsByClassName('div-link2')[0].style.display = 'none';
+        // 表示
+        document.getElementsByClassName('div-msg')[0].style.display = 'block';
+
+        // ?? メッセージ エレメント取得できてない
+        // const divMsg = document.getElementsByClassName('div-msg');
+        const h2Msg = document.getElementById('h2-msg');
+        const divMsg = document.getElementById('div-msg');
+        // 前回内容の削除
+        for (i = divMsg.childElementCount - 1; i > -1; i--) {
+          divMsg.children[i].remove();
+        }
+        // 新規内容の追加
+        // const h2 = document.createElement('h2');
+        // h2Msg.classList.add('h2-msg');
+        h2Msg.innerText = '新しく記録する';
+        // divMsg[0].append(h2);
+
+        const p1 = document.createElement('p');
+        p1.innerText = '登録が完了しました。';
+        divMsg.append(p1);
+
+        const p2 = document.createElement('p');
+        p2.innerText = `${data.message}`;
+        divMsg.append(p2);
+
+        // ??if文で遷移元画面ごとに表示文言を変更する（フォーム登録、編集）
+      }
+
+      // ?? エラーハンドリング用の関数　余裕があるときに検討
+      // function handleError(error) {
+      //   console.error('エラー:', error);
+      //   document.getElementById('message').textContent = 'エラーが発生しました。再度お試しください。';
+      // }
+
 
       // Action
       // [フラグ(enum)]
       // チェックリストの表示有無
-       const checklist = {
-        ON: 0,
-        OFF: 1
+      const checklist = {
+        ON : 0,
+        OFF : 1
       };
       let checklistState = checklist.ON;
+
+      // 遷移元
+      const transSrc = {
+        none : 0,
+        form : 1,
+        edit : 2
+      };
+      let transSrcState = transSrc.none;
 
       // 【画面ロード後処理】
       window.addEventListener('load', loadFinished);
@@ -408,6 +651,12 @@
       // 【メニュー】
       const menuHome = document.getElementsByClassName('menu-home');
       menuHome[0].addEventListener('click', loadFinished);
+
+      const menuMemory = document.getElementsByClassName('menu-memory');
+      menuMemory[0].addEventListener('click', function () {
+        checklistState = checklist.OFF;
+        usersAquariumList()
+      });
 
       // 【ホーム】
       // もっとみる ボタン
@@ -424,12 +673,52 @@
       // 編集 ボタン
       // これから編集予定
 
-      // 【思い出　ホームボタン】
-      const btnHome = document.getElementsByClassName('btn-home');
-      btnHome[0].addEventListener('click', loadFinished);
+      // 【思い出】
+      // ホーム ボタン
+      const btnHomes = document.getElementsByClassName('btn-home');
+      // btnHome[0].addEventListener('click', loadFinished);
+      for (let btnHome of btnHomes) {
+        btnHome.addEventListener('click', loadFinished);
+      }
+
+      // 【記録】
+      // 登録確認 ボタン
+      const btnConf = document.getElementsByName('btn-conf');
+      btnConf[0].addEventListener('click', userAquariumConf);
+
+      // クリア ボタン
+      const btnClear = document.getElementsByName('btn-clear');
+      btnClear[0].addEventListener('click', userAquariumClear);
+
+      // 登録 ボタン ??...(1)
+      const formAddVisitedInfo = document.getElementById('add-visited-info');
+      const btnSubm = document.getElementsByName('btn-subm');
+      formAddVisitedInfo.addEventListener('submit', function(event) {
+        event.preventDefault();  // フォームの送信ではなく非同期処理でデータをやり取りするため、ページリロードなどフォームのデフォルト動作をキャンセルする
+        btnSubm[0].disabled = true;  // 登録ボタンを非活性化
+
+        const formData = new FormData(this); // フォームデータ送信のためのオブジェクトを作成
+
+        // 非同期処理によるデータ送受信
+        fetch("{{ route('requests.add_visited_info') }}", {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.json();  // レスポンスが正常ならJSONとして返す
+          }
+          throw new Error('登録に失敗しました。');
+        })
+        .then(userAquariumSubm) // 登録完了画面を生成する関数の実行
+        .catch(error => {
+          console.error('エラー:', error);
+        });
+      });
 
     </script>
-    <!-- Bootstrap js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!-- Bootstrap js-Vita使用のため非表示 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> -->
+    
   </body>
 </html>
