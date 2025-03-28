@@ -6,13 +6,13 @@
     <title>aquarium-HOME</title>
     <!-- Vita-Bootstrap, css, jsの読み込み -->
     @vite(['resources/scss/styles.scss', 'resources/js/app.js', 'resources/css/style.css'])
-    <!-- css-Vita使用のため非表示 -->
+    <!-- *css-Vita使用のため非表示 -->
     <!-- <link rel="stylesheet" href="{{ asset('/css/style.css') }}"> -->
-    <!-- Bootstrap css-Vita使用のため非表示 -->
+    <!-- *Bootstrap css-Vita使用のため非表示 -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> -->
 
   </head>
-  <body class="update block--bkg-clr-main"> <!-- ?? bkg-clrはBEMでの記載に修正する -->
+  <body class="block--default-style block--bkg-clr-main">
     <header class="block--bkg-clr-second">
       <div class="container-fluid">
         <div class="row">
@@ -21,26 +21,30 @@
             <div class="container-fluid">
               <!-- Logo -->
               <a class="navbar-brand" href="#">
-                <img src="{{asset('storage/img/logo.jpg')}}" alt="logo" class="logo">
+                <img src="{{asset('storage/img/logo.jpg')}}" alt="logo" class="navbar__logo">
               </a>
               <!-- Hamburger menu -->
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span> <!-- ?? imgで画像に変更可能 -->
               </button>
-              <!-- Navigation menu -->
-              <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+              <!-- Navbar menu -->
+              <div id="navbarSupportedContent" class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav me-auto me-md-1 mb-2 mb-md-0">
                   <li class="nav-item">
-                    <btn class="nav-link active menu-home" aria-current="page">ホーム</bth>
+                    <!-- *jsでページ書き換えを行うため、ナビゲーションはリンクではなくボタンに変更 -->
+                    <!-- ?? active, aria-current="page"は後ほど設定 -->
+                    <!-- <btn class="nav-link active home__btn" aria-current="page">ホーム</bth> -->
+                    <btn class="nav-link active home__btn">ホーム</bth>
                   </li>
                   <li class="nav-item">
-                    <btn class="nav-link menu-memory">思い出</bth>
-                    <!-- <a class="nav-link" href="#">思い出</a> -->
+                    <btn class="nav-link memory__btn">思い出</bth>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <btn class="nav-link recode__btn">記録</bth>
                   </li>
                   <li class="nav-item">
+                    <!-- ?? 編集画面ができたら以下のコメントアウトを外す -->
+                    <!-- <btn class="nav-link edit__btn">編集</bth> -->
                     <a class="nav-link" href="#">Link</a>
                   </li>
                 </ul>
@@ -51,41 +55,42 @@
       </div>
     </header>
     <main class="block--bkg-clr-second">
-      <div class="div-main">
+      <div class="main__div">
         <!-- ホーム -->
-        <div class="div-home">
-          <section class="sec-1st">
-            <h2 class="update">思い出</h2>
-            <div class="container-fluid update">
+        <div class="home__div">
+          <section class="home__sec-memory">
+            <h2 class="heading--default-style">思い出</h2>
+            <div class="container-fluid div--default-style">
               <div class="row">
-                <div class="col-md-6 update hr-center">
-                  <img class="img-home-sec1">
+                <div class="col-md-6 div--default-style base--align-c">
+                  <img class="home__img"><!-- ユーザーの水族館画像 scriptで書き換え -->
                 </div>
-                <div class="col-md-6 update">
+                <div class="col-md-6 div--default-style">
                   <div>
-                    <p class="update">このごろ行った水族館</p>
-                    <!-- ユーザーの水族館情報 scriptで書き換え -->
-                    <table class="tbl-home-sec1"></table>
-                    <div class="hr-right">
-                      <button class="btn-memory" type="button">もっと見る</button>
+                    <p class="txt--default-style">このごろ行った水族館</p>
+                    <table class="home__tbl">
+                      <!-- ユーザーの水族館情報 scriptで書き換え -->
+                    </table>
+                    <div class="base--align-r">
+                      <button class="memory__btn" type="button">もっと見る</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-          <section class="sec-2nd">
-            <h2 class="update">水族館の記録</h2>
-            <div class="container-fluid update">
+          <section class="home__sec-recode-edit">
+            <h2 class="heading--default-style">水族館の記録</h2>
+            <div class="container-fluid div--default-style">
               <div class="row">
-                <div class="col-sm-6 update hr-center">
+                <div class="col-sm-6 div--default-style base--align-c">
                   <button>
-                    <img src="{{asset('storage/img/btn_register.png')}}" alt="記録する" class="btn-add">
+                    <img src="{{asset('storage/img/btn_register.png')}}" alt="記録する" class="recode__btn">
                   </button>
                 </div>
-                <div class="col-sm-6 update hr-center">
+                <div class="col-sm-6 div--default-style base--align-c">
                   <button>
-                    <img src="{{asset('storage/img/btn_edit.png')}}" alt="編集する" class="btn-edit">
+                    <img src="{{asset('storage/img/btn_edit.png')}}" alt="編集する" class="edit__btn">
                   </button>
                 </div>
               </div>
@@ -93,15 +98,15 @@
           </section>
         </div>
         <!-- 思い出 一覧、編集 一覧 -->
-        <div class="div-memory">
-          <section class="sec-1st">
-            <h2 class="update">思い出</h2>
+        <div class="memory__div">
+          <section class="memory__sec">
+            <h2 class="heading--default-style">思い出</h2>
             <div>
-              <div class="div-number update">
-                <!-- 件数 scriptで書き換え -->
+              <div class="memory__count div--default-style">
+                <!-- 思い出件数 scriptで書き換え -->
               </div>
-              <table class="tbl-memory">
-                <tr class="tbl-header">
+              <table class="memory__tbl">
+                <tr class="tbl-header--default-style">
                   <th></th>
                   <th>水族館名</th>
                   <th>いった日</th>
@@ -109,29 +114,27 @@
                 </tr>
                 <!-- ユーザーの水族館情報 scriptで書き換え -->
               </table>
-              <p class="count"></p>
-              <ul class="ul-page pagination">
+              <p class="memory__page-count"></p>
+              <ul class="pagination memory__pagination">
                 <!-- ページネーション scriptで書き換え -->
-                <li class="prev"><</li>
-                <li class="next">></li>
               </ul>
-              <div class="hr-center">
-                <button class="btn-home" type="button">ホーム</button>
+              <div class="base--align-c">
+                <button class="home__btn" type="button">ホーム</button>
               </div>
             </div>
           </section>
         </div>
         <!-- 記録 -->
-        <div class="div-add">
-          <section class="sec-1st">
-            <h2 class="update">新しく記録する</h2>
+        <div class="recode__div">
+          <section class="recode__sec">
+            <h2 class="heading--default-style">新しく記録する</h2>
             <div>
-              <!-- フォーム入力後に非同期処理でデータを送信し、登録完了画面に変わるようにするため、actionなどはしてしなくてもよい -->
+              <!-- *フォームは非同期処理でデータを送信するため、actionなどは非表示 -->
               <!-- <form action="{{ route('requests.add_visited_info') }}" method="post" enctype="multipart/form-data"> -->
-              <form id=add-visited-info>
+              <form id=recode__form>
                 @csrf
                 <!-- フォーム入力 -->
-                <table class="tbl-add">
+                <table class="recode__form-tbl">
                   <tr>
                     <th>水族館名</th>
                     <td>
@@ -152,41 +155,42 @@
                   </tr>
                   <tr>
                     <th>写真</th>
-                    <!-- 写真表示 scriptで書き換え -->
                     <td>
                       <input type="file" name="aquarium_images[]" accept=".png, .PNG, .jpg, .JPG" multiple>
-                      <div class="div_pv"></div>
+                      <div class="recode__form-img">
+                        <!-- 写真表示 scriptで書き換え -->
+                      </div>
                     </td>
                   </tr>
                 </table>
-                <button type="button" name="btn-conf" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <button type="button" name="recode__form-btn--conf" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                   登録確認
                 </button>
-                <button type="reset" name="btn-clear" class="btn btn-primary">リセット</button>
-                <!-- モーダル　??...(1) -->
+                <button type="reset" name="recode__form-btn--clear" class="btn btn-primary">リセット</button>
+                <!-- モーダル　*...(1) -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">登録内容</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <table>
                           <tbody>
-                            <tr id="modal-tr-aquarium-name">
+                            <tr id="recode__modal--aquarium-name">
                               <th>水族館名</th>
                               <td>：</td>
                             </tr>
-                            <tr id="modal-tr-visited_date">
+                            <tr id="recode__modal--visited-date">
                               <th>いった日</th>
                               <td>：</td>
                             </tr>
-                            <tr id="modal-tr-tweet">
+                            <tr id="recode__modal--tweet">
                               <th>ひとこと</th>
                               <td>：</td>
                             </tr>
-                            <tr id="modal-tr-aquarium-images">
+                            <tr id="recode__modal--aquarium-images">
                               <th>写真</th>
                               <td>：</td>
                             </tr>
@@ -195,7 +199,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
-                        <button type="submit" name="btn-subm" class="btn btn-primary" data-bs-dismiss="modal">登録</button>
+                        <button type="submit" name="recode__btn--subm" class="btn btn-primary" data-bs-dismiss="modal">登録</button>
                       </div>
                     </div>
                   </div>
@@ -205,36 +209,40 @@
           </section>
         </div>
         <!-- メッセージ ??-->
-        <div class="div-msg">
-          <h2 class="update" id="h2-msg"><!-- scriptで書き換え --></h2>
-          <!-- メッセージ表示 -->
-          <div id="div-msg"><!-- scriptで書き換え --></div>
-          <div class="hr-center">
-            <button class="btn-home" type="button">ホーム</button>
+        <!-- ?? ここからclass名検討 -->
+        <div class="msg__div">
+          <h2 class="heading--default-style" id="msg__heading">
+            <!-- h2 scriptで書き換え -->
+          </h2>
+          <div id="msg__div-txt">
+            <!-- メッセージ scriptで書き換え -->
+          </div>
+          <div class="base--align-c">
+            <button class="home__btn" type="button">ホーム</button>
           </div>
         </div>
-        <!-- リンク2 -->
+        <!-- ?? リンク2 -->
         <div class="div-link2">
 
         </div>
       </div>
     </main>
     <footer class="block--bkg-clr-second">
-      <div class="container-fluid update">
+      <div class="container-fluid div--default-style">
         <div class="row">
-          <div class="col-md-4 update hr-center">
+          <div class="col-md-4 div--default-style base--align-c">
             <a href="#利用規約リンク">利用規約</a>
           </div>
-          <div class="col-md-4 update hr-center">
+          <div class="col-md-4 div--default-style base--align-c">
             <a href="#プライバシーポリシーリンク">プライバシーポリシー</a>
           </div>
-          <div class="col-md-4 update hr-center">
+          <div class="col-md-4 div--default-style base--align-c">
             <a href="#お問い合わせリンク">お問い合わせ</a>
           </div>
         </div>
       </div>
-      <div class="update hr-center">
-        <p class="update">&copy; 2025 suizokukannoomoide</p>
+      <div class="div--default-style base--align-c">
+        <p class="txt--default-style">&copy; 2025 suizokukannoomoide</p>
       </div>
     </footer>
 
@@ -244,21 +252,21 @@
       function loadFinished(){
         // main div homeのみ表示
         // 非表示
-        document.getElementsByClassName('div-home')[0].style.display = 'none';
-        document.getElementsByClassName('div-memory')[0].style.display = 'none';
-        document.getElementsByClassName('div-add')[0].style.display = 'none';
-        document.getElementsByClassName('div-msg')[0].style.display = 'none';
+        document.getElementsByClassName('home__div')[0].style.display = 'none';
+        document.getElementsByClassName('memory__div')[0].style.display = 'none';
+        document.getElementsByClassName('recode__div')[0].style.display = 'none';
+        document.getElementsByClassName('msg__div')[0].style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('div-home')[0].style.display = 'block';
+        document.getElementsByClassName('home__div')[0].style.display = 'block';
 
-        // 【main div-home section1】
+        // 【main home__div section1】
         // [水族館の画像]
-        const imgHome1 = document.getElementsByClassName('img-home-sec1');
+        const imgHome1 = document.getElementsByClassName('home__img');
         imgHome1[0].src = "{{asset('storage/img/logo.jpg')}}";
 
         // [ユーザの直近の水族館情報]
-        const tblHome1 = document.getElementsByClassName("tbl-home-sec1");
+        const tblHome1 = document.getElementsByClassName("home__tbl");
 
         // 前回データ削除
         if (tblHome1[0].childNodes.length != 0) {
@@ -312,22 +320,22 @@
       function usersAquariumList(){
         // div memoryのみ表示
         // 非表示
-        document.getElementsByClassName('div-home')[0].style.display = 'none';
-        document.getElementsByClassName('div-memory')[0].style.display = 'none';
-        document.getElementsByClassName('div-add')[0].style.display = 'none';
-        document.getElementsByClassName('div-msg')[0].style.display = 'none';
+        document.getElementsByClassName('home__div')[0].style.display = 'none';
+        document.getElementsByClassName('memory__div')[0].style.display = 'none';
+        document.getElementsByClassName('recode__div')[0].style.display = 'none';
+        document.getElementsByClassName('msg__div')[0].style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('div-memory')[0].style.display = 'block';
+        document.getElementsByClassName('memory__div')[0].style.display = 'block';
 
 
-        // 【main div-memory section】
+        // 【main memory__div section】
         // visited_infoデータ取得
         fetch('api/users_aquarium_data')
         .then((response) => response.json())
         .then((data) => {
           // [表示件数 x件表示]
-          const divNumber = document.getElementsByClassName('div-number');
+          const divNumber = document.getElementsByClassName('memory__count');
           const number = Object.keys(data).length;
           divNumber[0].textContent = number + '件';
 
@@ -337,14 +345,14 @@
 
           // [現在のページ x/xページ表示]
           const count = (page, step) => {
-            const p = document.getElementsByClassName('count');
+            const p = document.getElementsByClassName('memory__page-count');
             const total = (data.length % step == 0) ? (data.length / step) : (Math.floor(data.length / step) + 1);
             p[0].innerText = page + '/' + total + 'ページ';
           }
 
           // [ユーザの水族館情報表示]
           const show = (page, step) => {
-            const tblMemory = document.getElementsByClassName('tbl-memory');
+            const tblMemory = document.getElementsByClassName('memory__tbl');
 
             // 前回データ削除
             if (document.getElementsByClassName('tbl-data').length != 0) {
@@ -404,7 +412,7 @@
           show(page, step);
 
           // [ページ数表示 <xxx>表示]
-          const ulPage = document.getElementsByClassName('ul-page');
+          const ulPage = document.getElementsByClassName('memory__pagination');
 
           // 前回データ削除
           for (let i = ulPage[0].children.length-1; i >= 0; i--) {
@@ -457,18 +465,18 @@
       function userAquariumAdd() {
         // div addのみ表示
         // 非表示
-        document.getElementsByClassName('div-home')[0].style.display = 'none';
-        document.getElementsByClassName('div-memory')[0].style.display = 'none';
-        document.getElementsByClassName('div-add')[0].style.display = 'none';
-        document.getElementsByClassName('div-msg')[0].style.display = 'none';
+        document.getElementsByClassName('home__div')[0].style.display = 'none';
+        document.getElementsByClassName('memory__div')[0].style.display = 'none';
+        document.getElementsByClassName('recode__div')[0].style.display = 'none';
+        document.getElementsByClassName('msg__div')[0].style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('div-add')[0].style.display = 'block';
+        document.getElementsByClassName('recode__div')[0].style.display = 'block';
       }
 
       // 思い出記録 -選択ファイル表示
       const aquariumImage = document.getElementsByName('aquarium_images[]');
-      const divPv = document.getElementsByClassName('div_pv');
+      const divPv = document.getElementsByClassName('recode__form-img');
 
       aquariumImage[0].addEventListener('change', () => {
         // 写真プレビュー表示
@@ -519,7 +527,7 @@
 
         // モーダル 登録内容確認
         // 水族館名
-        const modalAquariumName = document.getElementById('modal-tr-aquarium-name');
+        const modalAquariumName = document.getElementById('recode__modal--aquarium-name');
         // 前回内容の削除
         for (i = modalAquariumName.childElementCount - 1; i > 1; i--) {
           modalAquariumName.children[i].remove();
@@ -530,7 +538,7 @@
         modalAquariumName.append(td1);
 
         // いった日
-        const modalVisitedDate = document.getElementById('modal-tr-visited_date');
+        const modalVisitedDate = document.getElementById('recode__modal--visited-date');
         // 前回内容の削除
         for (i = modalVisitedDate.childElementCount - 1; i > 1; i--) {
           modalVisitedDate.children[i].remove();
@@ -541,7 +549,7 @@
         modalVisitedDate.append(td2);
 
         // ひとこと ??確認画面で改行が空白に置き換わるため確認
-        const modalTweet = document.getElementById('modal-tr-tweet');
+        const modalTweet = document.getElementById('recode__modal--tweet');
         // 前回内容の削除
         for (i = modalTweet.childElementCount - 1; i > 1; i--) {
           modalTweet.children[i].remove();
@@ -552,7 +560,7 @@
         modalTweet.append(td3);
 
         // 写真 ??Bootstrapのグリッドシステムで写真位置調整
-        const modalAquariumImages = document.getElementById('modal-tr-aquarium-images');
+        const modalAquariumImages = document.getElementById('recode__modal--aquarium-images');
         // 前回内容の削除
         for (i = modalAquariumImages.childElementCount - 1; i > 1; i--) {
           modalAquariumImages.children[i].remove();
@@ -575,7 +583,7 @@
       // 思い出記録 - クリア
       function userAquariumClear() {
         const aquariumImage = document.getElementsByName('aquarium_images[]');
-        const divPv = document.getElementsByClassName('div_pv');
+        const divPv = document.getElementsByClassName('recode__form-img');
         // 前回内容の削除（写真のみ）
         for (i = divPv[0].childElementCount - 1; i > -1; i--) {
           divPv[0].children[i].remove();
@@ -588,25 +596,25 @@
       function userAquariumSubm(data) {
         // div msgのみ表示
         // 非表示
-        document.getElementsByClassName('div-home')[0].style.display = 'none';
-        document.getElementsByClassName('div-memory')[0].style.display = 'none';
-        document.getElementsByClassName('div-add')[0].style.display = 'none';
-        document.getElementsByClassName('div-msg')[0].style.display = 'none';
+        document.getElementsByClassName('home__div')[0].style.display = 'none';
+        document.getElementsByClassName('memory__div')[0].style.display = 'none';
+        document.getElementsByClassName('recode__div')[0].style.display = 'none';
+        document.getElementsByClassName('msg__div')[0].style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('div-msg')[0].style.display = 'block';
+        document.getElementsByClassName('msg__div')[0].style.display = 'block';
 
         // ?? メッセージ エレメント取得できてない
-        // const divMsg = document.getElementsByClassName('div-msg');
-        const h2Msg = document.getElementById('h2-msg');
-        const divMsg = document.getElementById('div-msg');
+        // const divMsg = document.getElementsByClassName('msg__div');
+        const h2Msg = document.getElementById('msg__heading');
+        const divMsg = document.getElementById('msg__div-txt');
         // 前回内容の削除
         for (i = divMsg.childElementCount - 1; i > -1; i--) {
           divMsg.children[i].remove();
         }
         // 新規内容の追加
         // const h2 = document.createElement('h2');
-        // h2Msg.classList.add('h2-msg');
+        // h2Msg.classList.add('msg__heading');
         h2Msg.innerText = '新しく記録する';
         // divMsg[0].append(h2);
 
@@ -637,65 +645,47 @@
       };
       let checklistState = checklist.ON;
 
-      // 遷移元
-      const transSrc = {
-        none : 0,
-        form : 1,
-        edit : 2
-      };
-      let transSrcState = transSrc.none;
-
       // 【画面ロード後処理】
       window.addEventListener('load', loadFinished);
 
-      // 【メニュー】
-      const menuHome = document.getElementsByClassName('menu-home');
-      menuHome[0].addEventListener('click', loadFinished);
-
-      const menuMemory = document.getElementsByClassName('menu-memory');
-      menuMemory[0].addEventListener('click', function () {
-        checklistState = checklist.OFF;
-        usersAquariumList()
-      });
-
       // 【ホーム】
-      // もっとみる ボタン
-      const btnMemory = document.getElementsByClassName('btn-memory');
-      btnMemory[0].addEventListener('click', function () {
-        checklistState = checklist.OFF;
-        usersAquariumList();
-      });
-
-      // 記録 ボタン
-      const btnAdd = document.getElementsByClassName('btn-add');
-      btnAdd[0].addEventListener('click', userAquariumAdd);
-
-      // 編集 ボタン
-      // これから編集予定
+      // 遷移元ボタン：navbar-ホーム memory-ホーム ??recode-ホーム
+      const homeBtns = document.getElementsByClassName('home__btn');
+      for (let homeBtn of homeBtns) {
+        homeBtn.addEventListener('click', loadFinished);
+      }
 
       // 【思い出】
-      // ホーム ボタン
-      const btnHomes = document.getElementsByClassName('btn-home');
-      // btnHome[0].addEventListener('click', loadFinished);
-      for (let btnHome of btnHomes) {
-        btnHome.addEventListener('click', loadFinished);
+      // 遷移元ボタン：navbar-思い出 home-もっとみる
+      const memoryBtns = document.getElementsByClassName('memory__btn');
+      for (let memoryBtn of memoryBtns) {
+        memoryBtn.addEventListener('click', function () {
+          checklistState = checklist.OFF;
+          usersAquariumList()
+        });
       }
 
       // 【記録】
-      // 登録確認 ボタン
-      const btnConf = document.getElementsByName('btn-conf');
-      btnConf[0].addEventListener('click', userAquariumConf);
+      // 遷移元ボタン：navbar-記録 home-記録
+      const recodeBtns = document.getElementsByClassName('recode__btn');
+      for (let recodeBtn of recodeBtns) {
+        recodeBtn.addEventListener('click', userAquariumAdd);
+      }
 
-      // クリア ボタン
-      const btnClear = document.getElementsByName('btn-clear');
-      btnClear[0].addEventListener('click', userAquariumClear);
+      // ボタン-登録確認
+      const recodeBtnConf = document.getElementsByName('recode__form-btn--conf');
+      recodeBtnConf[0].addEventListener('click', userAquariumConf);
 
-      // 登録 ボタン ??...(1)
-      const formAddVisitedInfo = document.getElementById('add-visited-info');
-      const btnSubm = document.getElementsByName('btn-subm');
+      // ボタン-クリア
+      const recodeBtnClear = document.getElementsByName('recode__form-btn--clear');
+      recodeBtnClear[0].addEventListener('click', userAquariumClear);
+
+      // ?? 登録 ボタン ??...(1)
+      const formAddVisitedInfo = document.getElementById('recode__form');
+      const recodeBtnSubm = document.getElementsByName('recode__btn--subm');
       formAddVisitedInfo.addEventListener('submit', function(event) {
         event.preventDefault();  // フォームの送信ではなく非同期処理でデータをやり取りするため、ページリロードなどフォームのデフォルト動作をキャンセルする
-        btnSubm[0].disabled = true;  // 登録ボタンを非活性化
+        recodeBtnSubm[0].disabled = true;  // 登録ボタンを非活性化
 
         const formData = new FormData(this); // フォームデータ送信のためのオブジェクトを作成
 
@@ -715,6 +705,8 @@
           console.error('エラー:', error);
         });
       });
+
+      // 【編集】
 
     </script>
     <!-- Bootstrap js-Vita使用のため非表示 -->

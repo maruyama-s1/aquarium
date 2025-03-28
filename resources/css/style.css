@@ -3,11 +3,11 @@
   box-sizing: border-box;
 }
 
-.hr-center {
+.base--align-c {
   text-align: center;
 }
 
-.hr-right {
+.base--align-r {
   text-align: right;
 }
 
@@ -33,24 +33,24 @@
 }
 
 /* body */
-/* Bootstrapの影響で要素に直にスタイル適用できないため、updateクラス追加 */
-body.update {
+/* Bootstrapの影響で要素に直にスタイル適用できないため、default-styleクラス追加 */
+.block--default-style {
   width: 90%;
   margin: 20px auto;
   max-width: 900px;
 }
 
-h2.update {
+.heading--default-style {
   margin-bottom: 0;
   padding: 10px;
 }
 
-div.update {
+.div--default-style {
   margin-bottom: 0;
   padding: 10px;
 }
 
-p.update {
+.txt--default-style {
   margin-bottom: 0;
   /* padding: 10px;  後ほど検討*/
 }
@@ -61,7 +61,7 @@ header div.row {
   height: 80px;
 }
 
-header img.logo {
+.navbar__logo {
   width: 100px;
 }
 
@@ -70,12 +70,12 @@ main section {
   padding: 20px;
 }
 
-.img-home-sec1 {
+.home__img {
   width: 100%;
   max-width: 600px;
 }
 
-.sec-2nd button img { 
+.home__sec-recode-edit button img { 
   width: 100%;
   max-width: 250px;
 }
