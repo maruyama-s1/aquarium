@@ -57,7 +57,7 @@
     <main class="block--bkg-clr-second">
       <div class="main__div">
         <!-- ホーム -->
-        <div class="home__div">
+        <div id="home__div">
           <section class="home__sec-memory">
             <h2 class="heading--default-style">思い出</h2>
             <div class="container-fluid div--default-style">
@@ -98,7 +98,7 @@
           </section>
         </div>
         <!-- 思い出 一覧、編集 一覧 -->
-        <div class="memory__div">
+        <div id="memory__div">
           <section class="memory__sec">
             <h2 class="heading--default-style">思い出</h2>
             <div>
@@ -125,7 +125,7 @@
           </section>
         </div>
         <!-- 記録 -->
-        <div class="recode__div">
+        <div id="recode__div">
           <section class="recode__sec">
             <h2 class="heading--default-style">新しく記録する</h2>
             <div>
@@ -209,8 +209,7 @@
           </section>
         </div>
         <!-- メッセージ ??-->
-        <!-- ?? ここからclass名検討 -->
-        <div class="msg__div">
+        <div id="msg__div">
           <h2 class="heading--default-style" id="msg__heading">
             <!-- h2 scriptで書き換え -->
           </h2>
@@ -248,19 +247,20 @@
 
     <script>
       // Function
-      // ホーム -画面構成
+      // ホーム - 画面構成
       function loadFinished(){
-        // main div homeのみ表示
+        // ホーム画面を表示
         // 非表示
-        document.getElementsByClassName('home__div')[0].style.display = 'none';
-        document.getElementsByClassName('memory__div')[0].style.display = 'none';
-        document.getElementsByClassName('recode__div')[0].style.display = 'none';
-        document.getElementsByClassName('msg__div')[0].style.display = 'none';
+        document.getElementById('home__div').style.display = 'none';
+        document.getElementById('memory__div').style.display = 'none';
+        document.getElementById('recode__div').style.display = 'none';
+        document.getElementById('msg__div').style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('home__div')[0].style.display = 'block';
+        document.getElementById('home__div').style.display = 'block';
 
         // 【main home__div section1】
+        // DBデータ取得・表示
         // [水族館の画像]
         const imgHome1 = document.getElementsByClassName('home__img');
         imgHome1[0].src = "{{asset('storage/img/logo.jpg')}}";
@@ -320,16 +320,16 @@
       function usersAquariumList(){
         // div memoryのみ表示
         // 非表示
-        document.getElementsByClassName('home__div')[0].style.display = 'none';
-        document.getElementsByClassName('memory__div')[0].style.display = 'none';
-        document.getElementsByClassName('recode__div')[0].style.display = 'none';
-        document.getElementsByClassName('msg__div')[0].style.display = 'none';
+        document.getElementById('home__div').style.display = 'none';
+        document.getElementById('memory__div').style.display = 'none';
+        document.getElementById('recode__div').style.display = 'none';
+        document.getElementById('msg__div').style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('memory__div')[0].style.display = 'block';
+        document.getElementById('memory__div').style.display = 'block';
 
 
-        // 【main memory__div section】
+        // 水族館情報表示
         // visited_infoデータ取得
         fetch('api/users_aquarium_data')
         .then((response) => response.json())
@@ -339,15 +339,57 @@
           const number = Object.keys(data).length;
           divNumber[0].textContent = number + '件';
 
-          // ページネーション 初期設定
+          // ページネーション
+          // 初期設定
           let page = 1;
-          const step = 5;
+          const step = 10;
+          const ulPage = document.getElementsByClassName('memory__pagination');
 
-          // [現在のページ x/xページ表示]
           const count = (page, step) => {
-            const p = document.getElementsByClassName('memory__page-count');
+            // [現在のページ x/xページ表示]
+            // const p = document.getElementsByClassName('memory__page-count');
             const total = (data.length % step == 0) ? (data.length / step) : (Math.floor(data.length / step) + 1);
-            p[0].innerText = page + '/' + total + 'ページ';
+            // p[0].innerText = page + '/' + total + 'ページ';
+
+            // [ページ数表示 <xxx>表示]
+            // 前回データ削除
+            for (let i = ulPage[0].children.length-1; i >= 0; i--) {
+              ulPage[0].removeChild(ulPage[0].children[i]);
+            }
+
+            // "<"追加 
+            const liPrev = document.createElement('li');
+            liPrev.classList.add('prev');
+            liPrev.innerText = '<';
+            ulPage[0].appendChild(liPrev);
+
+            // ページ数追加
+            const liPage = document.createElement('li');
+            // liPage.classList.add('prev');
+            liPage.innerText = page + '/' + total + 'ページ';
+            ulPage[0].appendChild(liPage);
+
+            // ">"追加
+            const liNext = document.createElement('li');
+            liNext.classList.add('next');
+            liNext.innerText = ' >';
+            ulPage[0].appendChild(liNext);
+
+            // 前ページ遷移("<"クリック時)
+            const prev = document.getElementsByClassName('prev');
+            prev[0].addEventListener('click', () => {
+              if(page <= 1) return;
+              page = page - 1;
+              show(page, step);
+            });
+
+            // 次ページ遷移(">"クリック時)
+            const next = document.getElementsByClassName('next');
+            next[0].addEventListener('click', () => {
+              if(page >= data.length / step) return;
+              page = page + 1;
+              show(page, step);
+            });
           }
 
           // [ユーザの水族館情報表示]
@@ -410,50 +452,6 @@
             }
           }
           show(page, step);
-
-          // [ページ数表示 <xxx>表示]
-          const ulPage = document.getElementsByClassName('memory__pagination');
-
-          // 前回データ削除
-          for (let i = ulPage[0].children.length-1; i >= 0; i--) {
-            ulPage[0].removeChild(ulPage[0].children[i]);
-          }
-
-          // "<"追加 
-          const liPrev = document.createElement('li');
-          liPrev.classList.add('prev');
-          liPrev.innerText = '<';
-          ulPage[0].appendChild(liPrev);
-
-          // ページ数追加
-          const total = (data.length % step == 0) ? (data.length / step) : (Math.floor(data.length / step) + 1);
-          for (i=1; i < total+1; i++){
-            let liPage = document.createElement('li');
-            liPage.innerText = i;
-            ulPage[0].appendChild(liPage);
-          }
-
-          // ">"追加
-          const liNext = document.createElement('li');
-          liNext.classList.add('next');
-          liNext.innerText = '>';
-          ulPage[0].appendChild(liNext);
-
-          // 前ページ遷移("<"クリック時)
-          const prev = document.getElementsByClassName('prev');
-          prev[0].addEventListener('click', () => {
-            if(page <= 1) return;
-            page = page - 1;
-            show(page, step);
-          });
-
-          // 次ページ遷移(">"クリック時)
-          const next = document.getElementsByClassName('next');
-          next[0].addEventListener('click', () => {
-            if(page >= data.length / step) return;
-            page = page + 1;
-            show(page, step);
-          });
         })
         .catch(error => console.error('Error:', error));
       }
@@ -465,13 +463,13 @@
       function userAquariumAdd() {
         // div addのみ表示
         // 非表示
-        document.getElementsByClassName('home__div')[0].style.display = 'none';
-        document.getElementsByClassName('memory__div')[0].style.display = 'none';
-        document.getElementsByClassName('recode__div')[0].style.display = 'none';
-        document.getElementsByClassName('msg__div')[0].style.display = 'none';
+        document.getElementById('home__div').style.display = 'none';
+        document.getElementById('memory__div').style.display = 'none';
+        document.getElementById('recode__div').style.display = 'none';
+        document.getElementById('msg__div').style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('recode__div')[0].style.display = 'block';
+        document.getElementById('recode__div').style.display = 'block';
       }
 
       // 思い出記録 -選択ファイル表示
@@ -596,13 +594,13 @@
       function userAquariumSubm(data) {
         // div msgのみ表示
         // 非表示
-        document.getElementsByClassName('home__div')[0].style.display = 'none';
-        document.getElementsByClassName('memory__div')[0].style.display = 'none';
-        document.getElementsByClassName('recode__div')[0].style.display = 'none';
-        document.getElementsByClassName('msg__div')[0].style.display = 'none';
+        document.getElementById('home__div').style.display = 'none';
+        document.getElementById('memory__div').style.display = 'none';
+        document.getElementById('recode__div').style.display = 'none';
+        document.getElementById('msg__div').style.display = 'none';
         document.getElementsByClassName('div-link2')[0].style.display = 'none';
         // 表示
-        document.getElementsByClassName('msg__div')[0].style.display = 'block';
+        document.getElementById('msg__div').style.display = 'block';
 
         // ?? メッセージ エレメント取得できてない
         // const divMsg = document.getElementsByClassName('msg__div');
