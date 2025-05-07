@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use App\Http\Requests\AddVisitedInfoRequest;
 
 class VisitedInfoController extends Controller
 {
@@ -28,7 +28,8 @@ class VisitedInfoController extends Controller
     }
 
     // フォーム情報をDB登録
-    public function add_visited_info(Request $request) {
+    // *...(2) FormRequestによるバリデーション
+    public function add_visited_info(AddVisitedInfoRequest $request) {
         // フォーム入力データを取得
         $aquarium_name = $request->input('aquarium_name');
         $visited_date = $request->input('visited_date');
@@ -45,10 +46,8 @@ class VisitedInfoController extends Controller
         WHERE aquarium_name = "$aquarium_name"
         SQL;
         $aquarium_id = DB::connection('mysql2')->select($sql);
-        // stdClassをArrayに変換する
-        $aquarium_id_array = json_decode(json_encode($aquarium_id), true);
-        // Arrayをstrに変換する
-        $aquarium_id_str = $aquarium_id_array[0]['id'];
+        $aquarium_id_array = json_decode(json_encode($aquarium_id), true);  // stdClassをArrayに変換
+        $aquarium_id_str = $aquarium_id_array[0]['id'];  // Arrayをstrに変換
 
         // 登録された画像を保存、画像名をリストに格納
         // https://inouelog.com/laravel-image-display/
@@ -68,15 +67,6 @@ class VisitedInfoController extends Controller
         // $date_time = new DateTime();
         $now = date('Y-m-d');
 
-        // idと画像の表示確認（非表示中）
-        // var_dump($aquarium_name);
-        // var_dump($visited_date);
-        // var_dump($tweet);
-        // var_dump($aquarium_id_str);
-        // var_dump($pictures_str);
-        // var_dump($now);
-        // echo '<br/>';
-
         // フォーム入力データをDBに格納
         // picturesテーブル
         $sql = <<<SQL
@@ -84,10 +74,6 @@ class VisitedInfoController extends Controller
         (user_id, aquarium_id, picture, created_at)
         VALUES (99, $aquarium_id_str, "$pictures_str", "$now")
         SQL;
-
-        // sql文の確認（非表示中）
-        // var_dump($sql);
-        // echo '<br/>';
 
         DB::connection('mysql2')->insert($sql);
 
@@ -98,15 +84,9 @@ class VisitedInfoController extends Controller
         values ($aquarium_id_str, 99, "$now", "$visited_date", "$tweet")
         SQL;
 
-        // sql文の確認（非表示中）
-        // var_dump($sql);
-        // echo '<br/>';
-
         DB::connection('mysql2')->insert($sql);
 
-        // ??...(1)
-        // Ajaxを使って非同期でデータの送受信を行う
-        // JSONレスポンスを返す
+        // *...(1) Ajaxを使って非同期でデータの受信を行い、JSONレスポンスを返す
         return response()->json([
             'message' => '訪問情報が登録されました。',
         ]);

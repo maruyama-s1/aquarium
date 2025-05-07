@@ -205,6 +205,9 @@
                   </div>
                 </div>
               </form>
+              <div class="base--align-c">
+                <button class="home__btn" type="button">ホーム</button>
+              </div>
             </div>
           </section>
         </div>
@@ -365,7 +368,6 @@
 
             // ページ数追加
             const liPage = document.createElement('li');
-            // liPage.classList.add('prev');
             liPage.innerText = page + '/' + total + 'ページ';
             ulPage[0].appendChild(liPage);
 
@@ -586,7 +588,7 @@
         for (i = divPv[0].childElementCount - 1; i > -1; i--) {
           divPv[0].children[i].remove();
         }
-        // 保持してる写真を削除 ---下記リストをグローバル変数にして保持してる写真を削除
+        // 保持してる写真(グローバル変数)を削除
         fileList = [];
       }
 
@@ -678,7 +680,7 @@
       const recodeBtnClear = document.getElementsByName('recode__form-btn--clear');
       recodeBtnClear[0].addEventListener('click', userAquariumClear);
 
-      // ?? 登録 ボタン ??...(1)
+      // ?? 登録 ボタン *...(1)
       const formAddVisitedInfo = document.getElementById('recode__form');
       const recodeBtnSubm = document.getElementsByName('recode__btn--subm');
       formAddVisitedInfo.addEventListener('submit', function(event) {
@@ -690,13 +692,52 @@
         // 非同期処理によるデータ送受信
         fetch("{{ route('requests.add_visited_info') }}", {
           method: 'POST',
+          // *responseをJSONに変換するため、サーバーがレスポンスをJSON形式で返すよう指定
+          headers: {
+            'Accept': 'application/json',  // サーバーがJSONでレスポンスを返すように要求
+          },
           body: formData,
         })
         .then(response => {
+          // レスポンスが正常な場合
           if (response.ok) {
-            return response.json();  // レスポンスが正常ならJSONとして返す
+            recodeBtnSubm[0].disabled = false;  // 登録ボタンを活性化
+
+            // フォーム内の空白処理
+            formAddVisitedInfo.reset();  // フォームを空にする
+            
+            const aquariumImage = document.getElementsByName('aquarium_images[]');
+            const divPv = document.getElementsByClassName('recode__form-img');
+
+            for (i = divPv[0].childElementCount - 1; i > -1; i--) {    // 写真を空にする
+              divPv[0].children[i].remove();
+            }
+
+            fileList = [];  // 保持してる写真(グローバル変数)を削除
+
+            // レスポンス
+            return response.json();  // レスポンスをJSONで返す
           }
-          throw new Error('登録に失敗しました。');
+          // レスポンスがエラーの場合
+          return response.json().then(data => {
+            recodeBtnSubm[0].disabled = false;  // 登録ボタンを活性化
+
+            // バリデーションエラーの処理 *...(2)
+            let errorMessages = [];
+            for (let field in data.errors) {
+              if (data.errors.hasOwnProperty(field)) {  // data.errorsのプロパティのみ参照する
+                errorMessages.push(...data.errors[field]);  // 各エラーメッセージを配列に追加
+              }
+            }
+
+            // 複数のエラーメッセージをまとめて1つのアラートに表示  ??アラートのタイトルを変更する
+            if (errorMessages.length > 0) {
+              alert('バリデーションエラー:\n' + errorMessages.join('\n')); // 改行でエラーメッセージを区切って表示
+            }
+
+            throw new Error('登録に失敗しました。');
+
+          });
         })
         .then(userAquariumSubm) // 登録完了画面を生成する関数の実行
         .catch(error => {
